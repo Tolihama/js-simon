@@ -97,9 +97,7 @@ playBtn.addEventListener('click', () => {
                         break;
                     default:
                         let correctNumbersList = '';
-                        coincidences.forEach( (e, i) => {
-                            i === 0 ? correctNumbersList += `${e}` : correctNumbersList += `, ${e}`;
-                        });
+                        coincidences.forEach( (e, i) => i === 0 ? correctNumbersList += `${e}` : correctNumbersList += `, ${e}`);
 
                         stringCoincidences = `<br>
                         In particolare, hai ricordato correttamente i numeri ${correctNumbersList}.`;
