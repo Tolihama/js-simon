@@ -53,7 +53,7 @@ playBtn.addEventListener('click', () => {
     }
 
     // Start countdown
-    let timer = 100;
+    let timer = 300;
     const refreshTimer = setInterval(() => {
         // Countdown
         timer--;
