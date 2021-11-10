@@ -53,7 +53,7 @@ playBtn.addEventListener('click', () => {
     }
 
     // Start countdown
-    let timer = 300;
+    let timer = 100;
     const refreshTimer = setInterval(() => {
         // Countdown
         timer--;
@@ -61,6 +61,7 @@ playBtn.addEventListener('click', () => {
         // Refresh timer
         timerDom.innerHTML = `${timer / 10} secondi`;
 
+        // End game
         if (timer === 0) {
             // Stop timer
             clearInterval(refreshTimer);
@@ -71,49 +72,50 @@ playBtn.addEventListener('click', () => {
             // Hide generated numbers
             genNumSection.classList.add('d-none');
 
-            // Ask five numbers to check
-            askFiveNumbers();
+            setTimeout(() => {
+                // Ask five numbers to check
+                askFiveNumbers();
 
-            // Check input numbers coincidence and print input numbers
-            inputList.forEach(number => {
-                if (numbersList.includes(number)) {
-                    coincidences.push(number);
-                    inputNumbersDom.innerHTML += `<div class="card-number correct">${number}</div>`;
-                } else {
-                    inputNumbersDom.innerHTML += `<div class="card-number wrong">${number}</div>`;
+                // Check input numbers coincidence and print input numbers
+                inputList.forEach(number => {
+                    if (numbersList.includes(number)) {
+                        coincidences.push(number);
+                        inputNumbersDom.innerHTML += `<div class="card-number correct">${number}</div>`;
+                    } else {
+                        inputNumbersDom.innerHTML += `<div class="card-number wrong">${number}</div>`;
+                    }
+                });
+
+                // Print results
+                let stringCoincidences = '';
+                switch (coincidences.length) {
+                    case 0:
+                        break;
+                    case 1:
+                        stringCoincidences = `<br>
+                        In particolare, hai ricordato il numero ${coincidences[0]}.`;
+                        break;
+                    default:
+                        let correctNumbersList = '';
+                        coincidences.forEach( (e, i) => {
+                            i === 0 ? correctNumbersList += `${e}` : correctNumbersList += `, ${e}`;
+                        });
+
+                        stringCoincidences = `<br>
+                        In particolare, hai ricordato correttamente i numeri ${correctNumbersList}.`;
                 }
-            });
 
-            // Print results
-            let stringCoincidences = '';
-            switch (coincidences.length) {
-                case 0:
-                    break;
-                case 1:
-                    stringCoincidences = `<br>
-                    In particolare, hai ricordato il numero ${coincidences[0]}.`;
-                    break;
-                default:
-                    let correctNumbersList = '';
-                    coincidences.forEach( (e, i) => {
-                        i === 0 ? correctNumbersList += `${e}` : correctNumbersList += `, ${e}`;
-                    });
+                resultsDom.innerHTML = `Hai ottenuto un punteggio di ${coincidences.length} su 5.${stringCoincidences}`;
 
-                    stringCoincidences = `<br>
-                    In particolare, hai ricordato correttamente i numeri ${correctNumbersList}.`;
-            }
+                // Show all
+                genNumSection.classList.remove('d-none');
+                inputNumbSection.classList.remove('d-none');
+                resultsSection.classList.remove('d-none');
 
-            resultsDom.innerHTML = `Hai ottenuto un punteggio di ${coincidences.length} su 5.${stringCoincidences}`;
-
-            // Show all
-            genNumSection.classList.remove('d-none');
-            inputNumbSection.classList.remove('d-none');
-            resultsSection.classList.remove('d-none');
-
-            // Riactivate play game button
-            playBtn.classList.remove('d-none');
+                // Riactivate play game button
+                playBtn.classList.remove('d-none');
+            }, 50);
         }
-
     }, 100);
 });
 
