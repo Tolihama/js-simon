@@ -74,7 +74,20 @@ playBtn.addEventListener('click', () => {
 
             setTimeout(() => {
                 // Ask five numbers to check
-                askFiveNumbers();
+                for (let i = 0; i < 5; i++) {
+                    let numberInput;
+                    do {
+                        numberInput = parseInt(prompt(`Inserire numero ${i + 1} di 5.`).trim());
+                        if (isNaN(numberInput)) {
+                            alert('Inserire un numero!');
+                        }
+                        if (inputList.includes(numberInput)) {
+                            alert('Hai già inserito questo numero. Non barare!');
+                        }
+                    } while (isNaN(numberInput) || inputList.includes(numberInput));
+            
+                    inputList.push(numberInput);
+                }
 
                 // Check input numbers coincidence and print input numbers
                 inputList.forEach(number => {
@@ -123,15 +136,4 @@ playBtn.addEventListener('click', () => {
  */
 function genRandInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function askFiveNumbers() {
-    for (let i = 0; i < 5; i++) {
-        let numberInput;
-        do {
-            numberInput = parseInt(prompt(`Inserire numero ${i + 1} di 5.`).trim());
-        } while (isNaN(numberInput));
-
-        inputList.push(numberInput);
-    }
 }
