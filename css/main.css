@@ -5,3 +5,55 @@
     box-sizing: border-box;
     font-family: sans-serif;
 }
+
+body {
+    min-height: 100vh;
+}
+
+main {
+    flex-direction: column;
+}
+
+/* X and Y center */
+body,
+main,
+.numbers,
+.card-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* UTILITIES */
+.d-none {
+    display: none;
+}
+
+/* Custom classes */
+.timer {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.play-game {
+    margin: 20px 0;
+    padding: 10px 15px;
+    border-radius: 100rem;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+.numbers {
+    flex-wrap: wrap;
+}
+
+.card-number {
+    background-color: lightcyan;
+    height: 50px;
+    width: 50px;
+    margin: 20px;
+}
