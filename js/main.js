@@ -9,6 +9,10 @@ const generatedNumbersDom = document.querySelector('.generated.numbers');
 const inputNumbersDom = document.querySelector('.input.numbers');
 const resultsDom = document.querySelector('.results');
 
+const genNumSection = document.getElementById('generated-numbers');
+const inputNumbSection = document.getElementById('input-numbers');
+const resultsSection = document.getElementById('results');
+
 // Game data
 let numbersList;
 let inputList;
@@ -16,16 +20,24 @@ let coincidences;
 
 // Game script
 playBtn.addEventListener('click', () => {
-    // Show timer
-    timerDom.classList.remove('d-none');
-
-    // Disable play game button
-    playBtn.classList.add('disabled');
-
     // Reset game data
     numbersList = [];
     inputList = [];
-    coincidences = 0;
+    coincidences = [];
+
+    // Reset DOM
+    generatedNumbersDom.innerHTML = '';
+    inputNumbersDom.innerHTML = '';
+    resultsDom.innerHTML = '';
+
+    // Show timer and generated numbers
+    timerDom.classList.remove('d-none');
+    genNumSection.classList.remove('d-none');
+
+    // Hide play game button, input numbers and results section
+    playBtn.classList.add('d-none');
+    inputNumbSection.classList.add('d-none');
+    resultsSection.classList.add('d-none');
 
     // Five random number generation
     for (let i = 0; i < 5; i++) {
@@ -57,27 +69,49 @@ playBtn.addEventListener('click', () => {
             timerDom.classList.add('d-none');
 
             // Hide generated numbers
-            generatedNumbersDom.classList.add('d-none');
+            genNumSection.classList.add('d-none');
 
             // Ask five numbers to check
             askFiveNumbers();
 
-            // Check input numbers coincidences, print input numbers
+            // Check input numbers coincidence and print input numbers
             inputList.forEach(number => {
-                // Print input number
-                inputNumbersDom.innerHTML += `<div class="card-number">${number}</div>`;
-
-                // Check coincidence
                 if (numbersList.includes(number)) {
-                    coincidences++;
+                    coincidences.push(number);
+                    inputNumbersDom.innerHTML += `<div class="card-number correct">${number}</div>`;
+                } else {
+                    inputNumbersDom.innerHTML += `<div class="card-number wrong">${number}</div>`;
                 }
             });
 
-            // Print result
-            resultsDom.innerHTML = `Hai ricordato ${coincidences} numeri su 5.`;
+            // Print results
+            let stringCoincidences = '';
+            switch (coincidences.length) {
+                case 0:
+                    break;
+                case 1:
+                    stringCoincidences = `<br>
+                    In particolare, hai ricordato il numero ${coincidences[0]}.`;
+                    break;
+                default:
+                    let correctNumbersList = '';
+                    coincidences.forEach( (e, i) => {
+                        i === 0 ? correctNumbersList += `${e}` : correctNumbersList += `, ${e}`;
+                    });
+
+                    stringCoincidences = `<br>
+                    In particolare, hai ricordato correttamente i numeri ${correctNumbersList}.`;
+            }
+
+            resultsDom.innerHTML = `Hai ottenuto un punteggio di ${coincidences.length} su 5.${stringCoincidences}`;
+
+            // Show all
+            genNumSection.classList.remove('d-none');
+            inputNumbSection.classList.remove('d-none');
+            resultsSection.classList.remove('d-none');
 
             // Riactivate play game button
-            playBtn.classList.remove('disabled');
+            playBtn.classList.remove('d-none');
         }
 
     }, 100);
@@ -95,7 +129,7 @@ function askFiveNumbers() {
     for (let i = 0; i < 5; i++) {
         let numberInput;
         do {
-            numberInput = parseInt(prompt(`Inserire numero ${i} di 5.`).trim());
+            numberInput = parseInt(prompt(`Inserire numero ${i + 1} di 5.`).trim());
         } while (isNaN(numberInput));
 
         inputList.push(numberInput);
